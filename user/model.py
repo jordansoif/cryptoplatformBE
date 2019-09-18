@@ -91,5 +91,5 @@ class Users(Document):
             "password": self.password,
             "bitcoin": self.bitcoin,
             "holdings": [holding.serializer_test() for holding in self.holdings],
-            "realized_postions": "placeholder"
+            "realized_postions": [lot.serializer_realized_gain_loss_display() for lot in self.realized_positions]
         }
