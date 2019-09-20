@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from binance.client import Client
 from keys import *
 
-client = Client(API_KEY, API_SECRET)
+client = Client(API_KEY_BINANCE, API_SECRET_BINANCE)
 
 
 class Purchase_Lots(EmbeddedDocument):

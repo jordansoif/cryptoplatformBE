@@ -1,13 +1,15 @@
 from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource, reqparse, Namespace
 from binance.client import Client
+from newsapi import NewsApiClient
 from keys import *
 
-api = Namespace("binance")
+api = Namespace("altapi")
 
 # BINANCE API ROUTES
 
-client = Client(API_KEY, API_SECRET)
+client = Client(API_KEY_BINANCE, API_SECRET_BINANCE)
+newsapi = NewsApiClient(api_key=API_KEY_NEWS)
 
 
 @api.route("/getsymbolinfo")
@@ -38,6 +40,18 @@ class GetAllSymbols(Resource):
     def get(self):
         all_symbols = client.get_all_tickers()
         return all_symbols
+
+
+# NEWS API ROUTES
+@api.route("/topstories")
+class GetTopStories(Resource):
+    def get(self):
+        return newsapi.get_everything(q='bitcoin',
+                                      from_param='2019-09-01',
+                                      to='2019-09-18',
+                                      language='en',
+                                      sort_by='relevancy',
+                                      page=2)
 
 
 # PARSER

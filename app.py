@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from accountInfo import api as account_info_api
 from authorization import api as auth_api
-from binanceAPI import api as binance_api
+from altAPI import api as alt_api
 from trade import api as trade_api
 from user import api as user_api
 
@@ -24,7 +24,7 @@ api.init_app(app)
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 jwt = JWTManager(app)
 api.add_namespace(auth_api, path="/auth")
-api.add_namespace(binance_api, path="/binance")
+api.add_namespace(alt_api, path="/altapi")
 api.add_namespace(account_info_api, path="/info")
 api.add_namespace(trade_api, path="/trade")
 api.add_namespace(user_api, path="/user")

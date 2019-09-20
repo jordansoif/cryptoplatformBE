@@ -14,7 +14,7 @@ def auth_login(user, password):
             access_token = create_access_token(
                 identity=str(user_finder["id"]))
             return {"access_token": access_token}, 200
-    return {"error": "shit happened"}, 400
+    return {"error": "Incorrect user name or password"}, 400
 
 
 # Create User
