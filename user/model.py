@@ -78,7 +78,7 @@ class Realized_Positions(EmbeddedDocument):
 
 class Users(Document):
     user_name = StringField(max_length=20)
-    password = StringField(max_length=20, default="")
+    password = StringField()
     bitcoin = FloatField(default=0.00)
     holdings = EmbeddedDocumentListField("Holdings", default=list)
     realized_positions = EmbeddedDocumentListField(

@@ -8,15 +8,15 @@ api = Namespace("trade")
 # ROUTES
 
 # Purchase Security
-@api.route('/purchasecrypto')
+@api.route('/buycrypto')
 class PurchaseCrypto(Resource):
     @jwt_required
     def put(self):
         parser = trade_page_purchase_parser()
         args = parser.parse_args()
         symbol = args['symbol']
-        purchase_price = float(args['cost_per_unit'])
-        units_purchased = float(args['units_purchased'])
+        purchase_price = float(args['share_price'])
+        units_purchased = float(args['total_shares'])
         user_id = get_jwt_identity()
         return purchase_crypto(user_id, symbol, purchase_price, units_purchased)
 
@@ -29,9 +29,8 @@ class SellCrypto(Resource):
         args = parser.parse_args()
         symbol = args['symbol']
         share_price = args['share_price']
+        total_shares_being_sold = args['total_shares']
         trade_value_calc = args['trade_value_calc']
-        total_shares_being_sold = args['total_shares_being_sold']
-        # this now works, returns a list(array) of dicts(objects)
         sale_lots = args['sale_lots']
         user_id = get_jwt_identity()
         return sell_crypto(user_id, symbol, share_price, trade_value_calc, total_shares_being_sold, sale_lots)
@@ -63,8 +62,8 @@ def trade_page_purchase_parser():
     parser = reqparse.RequestParser()
     parser.add_argument("symbol",
                         required=True)
-    parser.add_argument("cost_per_unit")
-    parser.add_argument("units_purchased")
+    parser.add_argument("share_price")
+    parser.add_argument("total_shares")
     return parser
 
 
@@ -74,7 +73,7 @@ def trade_page_sale_parser():
                         required=True)
     parser.add_argument("share_price", type=float)
     parser.add_argument("trade_value_calc", type=float)
-    parser.add_argument("total_shares_being_sold", type=float)
+    parser.add_argument("total_shares", type=float)
     parser.add_argument("sale_lots", type=dict, action="append")
     return parser
 

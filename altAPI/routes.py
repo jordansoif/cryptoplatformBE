@@ -45,7 +45,7 @@ class GetAllSymbols(Resource):
 # NEWS API ROUTES
 @api.route("/topstories")
 class GetTopStories(Resource):
-    def get(self):
+    def get(self):  # Need to use time but configure date as specified below
         return newsapi.get_everything(q='bitcoin',
                                       from_param='2019-09-01',
                                       to='2019-09-18',

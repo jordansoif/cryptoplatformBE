@@ -5,8 +5,20 @@ from flask_jwt_extended import (
 from user.model import Users
 from flask_restplus import Api, Resource, reqparse, Namespace
 from .controller import *
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(
+    schemes=["pbkdf2_sha256"],
+    default="pbkdf2_sha256",
+    pbkdf2_sha256__default_rounds=20000
+)
 
 api = Namespace("auth")
+
+
+def encrypt_password(password):
+    return pwd_context.encrypt(password)
+
 
 # User Login
 @api.route("/login")
@@ -15,7 +27,7 @@ class AuthLogin(Resource):
         parser = login_page_parser()
         args = parser.parse_args()
         user = args["user_name"]
-        password = args["password"]
+        password = args['password']
         return auth_login(user, password)
 
 # Create User
@@ -25,8 +37,8 @@ class CreateUser(Resource):
         parser = login_page_parser()
         args = parser.parse_args()
         user = args['user_name']
-        password = args['password']
-        create_user(user, password)
+        password = encrypt_password(args['password'])
+        return create_user(user, password)
 
 # Change User Password
 @api.route('/changepassword')
@@ -35,8 +47,8 @@ class ChangePassword(Resource):
         parser = login_page_parser()
         args = parser.parse_args()
         user = args['user_name']
-        password = args['password']
-        new_password = args['new_password']
+        password = encrypt_password(args['password'])
+        new_password = encrypt_password(args['new_password'])
         return change_password(user, password, new_password)
 
 
