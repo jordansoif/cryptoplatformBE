@@ -7,14 +7,16 @@ api = Namespace("accountinfo")
 
 # HOLDINGS PAGE ROUTES ONLY
 
+
+# NEEDS COMPLETE OVERHAUL
 # Get All Holdings
 @api.route("/getallholdings")
 class GetAllHoldings(Resource):
     @jwt_required
     def get(self):
-        user_id = get_jwt_identity()
-        return get_all_holdings(user_id)
-
+        new_puchase_lot = Purchase_Lots()
+        new_puchase_lot.save()
+        return "created"
 
 # REALIZED GAIN LOSS PAGE ONLY
 

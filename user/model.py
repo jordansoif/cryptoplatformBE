@@ -10,8 +10,10 @@ client = Client(API_KEY_BINANCE, API_SECRET_BINANCE)
 # Holdings will be removed
 
 
-class Purchase_Lots(EmbeddedDocument):
-    _id = ObjectIdField(required=True)
+class Purchase_Lots(Document):
+    _id = ObjectIdField(default=ObjectId())
+    user_owner = ObjectIdField(default=ObjectId())
+    symbol = StringField(default="LTCBTC")
     purchase_date_time = DateTimeField(default=datetime.datetime.now())
     units_purchased = FloatField(default=0.00)
     cost_per_unit = FloatField(default=0.00)
@@ -19,41 +21,45 @@ class Purchase_Lots(EmbeddedDocument):
     def serializer_purchase_lots(self):
         return{
             "id": str(self._id),
+            "user_owner": str(self.user_owner),
+            "symbol": self.symbol,
             "purchase_date_time": self.purchase_date_time.isoformat(),
             "units_purchased": self.units_purchased,
             "cost_per_unit": self.cost_per_unit
         }
 
 
-class Holdings(EmbeddedDocument):
-    symbol = StringField(default="")
-    units_held = FloatField(default=0.00)
-    average_cost_per_unit = FloatField(default=0.00)
-    purchase_lots = EmbeddedDocumentListField('Purchase_Lots', default=list)
+# CREATE UNITS_HELD AND AVERAGE_COST_PER_UNIT ON THE FLY
 
-    def serializer_test(self):
-        return{
-            "symbol": self.symbol,
-            "units_held": self.units_held,
-            "average_cost_per_unit": self.average_cost_per_unit,
-            "purchase_lots": [lots.serializer_purchase_lots() for lots in self.purchase_lots]
-        }
+# class Holdings(EmbeddedDocument):
+#     symbol = StringField(default="")
+#     units_held = FloatField(default=0.00)
+#     average_cost_per_unit = FloatField(default=0.00)
+#     purchase_lots = EmbeddedDocumentListField('Purchase_Lots', default=list)
 
-    def serializer_symbol_only(self):
-        return{"symbol": self.symbol}
+#     def serializer_test(self):
+#         return{
+#             "symbol": self.symbol,
+#             "units_held": self.units_held,
+#             "average_cost_per_unit": self.average_cost_per_unit,
+#             "purchase_lots": [lots.serializer_purchase_lots() for lots in self.purchase_lots]
+#         }
 
-    def serializer_holdings(self):
-        current_price = float(client.get_symbol_ticker(
-            symbol=self.symbol)['price'])
-        return{
-            "symbol": self.symbol,
-            "units_held": self.units_held,
-            "average_cost_per_unit": self.average_cost_per_unit,
-            "current_price": current_price,
-            "position_value": self.units_held * current_price,
-            "total_cost_basis": self.units_held * self.average_cost_per_unit,
-            "profit_or_loss": (current_price - self.average_cost_per_unit) * self.units_held
-        }
+#     def serializer_symbol_only(self):
+#         return{"symbol": self.symbol}
+
+#     def serializer_holdings(self):
+#         current_price = float(client.get_symbol_ticker(
+#             symbol=self.symbol)['price'])
+#         return{
+#             "symbol": self.symbol,
+#             "units_held": self.units_held,
+#             "average_cost_per_unit": self.average_cost_per_unit,
+#             "current_price": current_price,
+#             "position_value": self.units_held * current_price,
+#             "total_cost_basis": self.units_held * self.average_cost_per_unit,
+#             "profit_or_loss": (current_price - self.average_cost_per_unit) * self.units_held
+#         }
 
 
 class Realized_Positions(EmbeddedDocument):
@@ -83,7 +89,6 @@ class Users(Document):
     user_name = StringField(max_length=20)
     password = StringField()
     bitcoin = FloatField(default=0.00)
-    holdings = EmbeddedDocumentListField("Holdings", default=list)
     realized_positions = EmbeddedDocumentListField(
         "Realized_Positions", default=list)
 
@@ -93,6 +98,5 @@ class Users(Document):
             "user_name": self.user_name,
             "password": self.password,
             "bitcoin": self.bitcoin,
-            "holdings": [holding.serializer_test() for holding in self.holdings],
             "realized_postions": [lot.serializer_realized_gain_loss_display() for lot in self.realized_positions]
         }
