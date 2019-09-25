@@ -26,9 +26,8 @@ class AuthLogin(Resource):
     def post(self):
         parser = login_page_parser()
         args = parser.parse_args()
-        user = args["user_name"]
-        password = args['password']
-        return auth_login(user, password)
+        return auth_login(user=args["user_name"],
+                          password=args['password'])
 
 # Create User
 @api.route('/createuser')
@@ -36,9 +35,8 @@ class CreateUser(Resource):
     def post(self):
         parser = login_page_parser()
         args = parser.parse_args()
-        user = args['user_name']
-        password = encrypt_password(args['password'])
-        return create_user(user, password)
+        return create_user(user=args['user_name'],
+                           password=encrypt_password(args['password']))
 
 # Change User Password
 @api.route('/changepassword')
@@ -46,10 +44,9 @@ class ChangePassword(Resource):
     def put(self):
         parser = login_page_parser()
         args = parser.parse_args()
-        user = args['user_name']
-        password = encrypt_password(args['password'])
-        new_password = encrypt_password(args['new_password'])
-        return change_password(user, password, new_password)
+        return change_password(user=args['user_name'],
+                               password=encrypt_password(args['password']),
+                               new_password=encrypt_password(args['new_password']))
 
 
 # PARSERS

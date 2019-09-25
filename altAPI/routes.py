@@ -17,8 +17,7 @@ class GetSymbolInfo(Resource):
     def put(self):
         parser = binance_parser()
         args = parser.parse_args()
-        symbol = args["symbol"]
-        symbol_info = client.get_symbol_ticker(symbol=symbol)
+        symbol_info = client.get_symbol_ticker(symbol=args["symbol"])
         return symbol_info
 
 
@@ -27,11 +26,12 @@ class TwoDayKline(Resource):
     def put(self):
         parser = binance_parser()
         args = parser.parse_args()
-        symbol = args["symbol"]
         exchange_time = client.get_server_time()
         two_days_back = exchange_time["serverTime"] - 172800000
         klines = client.get_klines(
-            symbol=symbol, interval=Client.KLINE_INTERVAL_1HOUR, startTime=two_days_back)
+            symbol=args["symbol"],
+            interval=Client.KLINE_INTERVAL_1HOUR,
+            startTime=two_days_back)
         return klines
 
 

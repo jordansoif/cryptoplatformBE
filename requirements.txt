@@ -24,6 +24,8 @@ Jinja2==2.10.1
 jsonschema==3.0.2
 MarkupSafe==1.1.1
 mongoengine==0.18.2
+newsapi-python==0.2.5
+passlib==1.7.1
 pyasn1==0.4.7
 pyasn1-modules==0.2.6
 pycodestyle==2.5.0
@@ -37,12 +39,12 @@ python-binance==0.7.3
 python-dateutil==2.8.0
 pytz==2019.2
 regex==2019.8.19
-requests==2.22.0
+requests==2.21.0
 service-identity==18.1.0
 six==1.12.0
 Twisted==19.7.0
 txaio==18.8.1
 tzlocal==2.0.0
-urllib3==1.25.3
+urllib3==1.24.3
 Werkzeug==0.15.6
 zope.interface==4.6.0

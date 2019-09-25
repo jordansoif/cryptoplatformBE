@@ -45,9 +45,8 @@ class UpdateBitcoin(Resource):
     def put(self):
         parser = update_bitcoin_parser()
         args = parser.parse_args()
-        bitcoin = args['bitcoin']
         user_id = get_jwt_identity()
-        return update_bitcoin(user_id, bitcoin)
+        return update_bitcoin(user_id, bitcoin=args['bitcoin'])
 
 
 # PARSERS

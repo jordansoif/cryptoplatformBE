@@ -57,7 +57,6 @@ def purchase_crypto(user_id, symbol, purchase_price, units_purchased):
 
 # Sell Security
 def sell_crypto(user_id, symbol, share_price, trade_value_calc, total_shares_being_sold, sale_lots):
-    # Find user # THIS WILL CHANGE TO USER ID
     user_finder = Users.objects(id=user_id).first()
     holdings_finder = user_finder.holdings.filter(
         symbol=symbol)  # Find symbol being traded

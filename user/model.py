@@ -8,7 +8,7 @@ client = Client(API_KEY_BINANCE, API_SECRET_BINANCE)
 
 
 class Purchase_Lots(EmbeddedDocument):
-    _id = ObjectIdField(default=lambda: ObjectId(), required=True)
+    _id = ObjectIdField(required=True)
     purchase_date_time = DateTimeField(default=datetime.datetime.now())
     units_purchased = FloatField(default=0.00)
     cost_per_unit = FloatField(default=0.00)

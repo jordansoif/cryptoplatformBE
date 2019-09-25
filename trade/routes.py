@@ -12,28 +12,28 @@ api = Namespace("trade")
 class PurchaseCrypto(Resource):
     @jwt_required
     def put(self):
-        parser = trade_page_purchase_parser()
+        parser = trade_page_parser()
         args = parser.parse_args()
-        symbol = args['symbol']
-        purchase_price = float(args['share_price'])
-        units_purchased = float(args['total_shares'])
         user_id = get_jwt_identity()
-        return purchase_crypto(user_id, symbol, purchase_price, units_purchased)
+        return purchase_crypto(user_id,
+                               symbol=args['symbol'],
+                               purchase_price=float(args['share_price']),
+                               units_purchased=float(args['total_shares']))
 
 # Sell Security
 @api.route('/sellcrypto')
 class SellCrypto(Resource):
     @jwt_required
     def put(self):
-        parser = trade_page_sale_parser()
+        parser = trade_page_parser()
         args = parser.parse_args()
-        symbol = args['symbol']
-        share_price = args['share_price']
-        total_shares_being_sold = args['total_shares']
-        trade_value_calc = args['trade_value_calc']
-        sale_lots = args['sale_lots']
         user_id = get_jwt_identity()
-        return sell_crypto(user_id, symbol, share_price, trade_value_calc, total_shares_being_sold, sale_lots)
+        return sell_crypto(user_id,
+                           symbol=args['symbol'],
+                           share_price=args['share_price'],
+                           trade_value_calc=args['trade_value_calc'],
+                           total_shares_being_sold=args['total_shares'],
+                           sale_lots=args['sale_lots'])
 
 
 # Get User Purchase Lots for Single Symbol
@@ -41,11 +41,11 @@ class SellCrypto(Resource):
 class GetAllSymbolPurchaseLots(Resource):
     @jwt_required
     def put(self):
-        parser = get_user_symbol_parser()
+        parser = trade_page_parser()
         args = parser.parse_args()
-        symbol = args["symbol"]
         user_id = get_jwt_identity()
-        return get_all_symbol_purchase_lots(user_id, symbol)
+        return get_all_symbol_purchase_lots(user_id,
+                                            symbol=args["symbol"])
 
 # Get All Symbols in Holdings
 @api.route("/getallsymbolholdings")
@@ -58,27 +58,13 @@ class GetAllSymbolHoldings(Resource):
 
 # PARSERS
 
-def trade_page_purchase_parser():
-    parser = reqparse.RequestParser()
-    parser.add_argument("symbol",
-                        required=True)
-    parser.add_argument("share_price")
-    parser.add_argument("total_shares")
-    return parser
 
-
-def trade_page_sale_parser():
+def trade_page_parser():
     parser = reqparse.RequestParser()
     parser.add_argument("symbol",
                         required=True)
     parser.add_argument("share_price", type=float)
-    parser.add_argument("trade_value_calc", type=float)
     parser.add_argument("total_shares", type=float)
+    parser.add_argument("trade_value_calc", type=float)
     parser.add_argument("sale_lots", type=dict, action="append")
-    return parser
-
-
-def get_user_symbol_parser():
-    parser = reqparse.RequestParser()
-    parser.add_argument("symbol")
     return parser
