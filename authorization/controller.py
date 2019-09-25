@@ -43,9 +43,9 @@ def create_user(user, password):
 def change_password(user, password, new_password):
     user_finder = Users.objects(user_name=user).first()
     if user_finder != None:
-        if check_encrypted_password(user_finder.password, password):
+        if check_encrypted_password(password, user_finder.password):
             user_finder.update(set__password=new_password)
             user_finder.save()
             return "Password has been updated."
     else:
-        return "Username/Password does not exist"
+        return "Username or Password are incorrect."

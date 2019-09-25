@@ -45,7 +45,7 @@ class ChangePassword(Resource):
         parser = login_page_parser()
         args = parser.parse_args()
         return change_password(user=args['user_name'],
-                               password=encrypt_password(args['password']),
+                               password=args['password'],
                                new_password=encrypt_password(args['new_password']))
 
 

@@ -6,6 +6,9 @@ from keys import *
 
 client = Client(API_KEY_BINANCE, API_SECRET_BINANCE)
 
+# Page needs refactoring, purchase_lots will be made independant  (possibly realized positions as well)
+# Holdings will be removed
+
 
 class Purchase_Lots(EmbeddedDocument):
     _id = ObjectIdField(required=True)
