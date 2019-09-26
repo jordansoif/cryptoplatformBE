@@ -2,9 +2,9 @@ from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource, reqparse, Namespace
 from binance.client import Client
 from newsapi import NewsApiClient
-from keys import *
+from keys import API_KEY_BINANCE, API_SECRET_BINANCE, API_KEY_NEWS
 
-api = Namespace("altapi")
+api = Namespace("marketdata")
 
 # BINANCE API ROUTES
 

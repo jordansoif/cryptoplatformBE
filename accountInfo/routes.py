@@ -1,22 +1,19 @@
 from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource, reqparse, Namespace
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
-from .controller import *
+from .controller import get_all_holdings, get_all_realized, update_bitcoin
 
 api = Namespace("accountinfo")
 
 # HOLDINGS PAGE ROUTES ONLY
 
-
-# NEEDS COMPLETE OVERHAUL
 # Get All Holdings
 @api.route("/getallholdings")
 class GetAllHoldings(Resource):
     @jwt_required
     def get(self):
-        new_puchase_lot = Purchase_Lots()
-        new_puchase_lot.save()
-        return "created"
+        user_id = get_jwt_identity()
+        return get_all_holdings(user_id)
 
 # REALIZED GAIN LOSS PAGE ONLY
 
@@ -37,8 +34,8 @@ class GetUserBitcoin(Resource):
     @jwt_required
     def get(self):
         user_id = get_jwt_identity()
-        user_finder = Users.objects(id=user_id).first()
-        return user_finder.bitcoin
+        user = Users.objects(id=user_id).first()
+        return user["bitcoin"]
 
 # Update User bitcoin
 @api.route("/updatebitcoin")

@@ -13,7 +13,5 @@ api = Namespace("user")
 class GetUser(Resource):
     @jwt_required
     def get(self):
-        current_user_id = get_jwt_identity()
-        return get_user(current_user_id)
-
- # Authorization: `Bearer ${token}` }
+        user_id = get_jwt_identity()
+        return get_user(user_id)

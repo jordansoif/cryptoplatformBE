@@ -4,7 +4,7 @@ from flask_jwt_extended import (
 )
 from user.model import Users
 from flask_restplus import Api, Resource, reqparse, Namespace
-from .controller import *
+from .controller import auth_login, create_user, change_password
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(
