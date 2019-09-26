@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource, reqparse, Namespace
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from .controller import get_all_holdings, get_all_realized, update_bitcoin
+from user.model import Users
 
 api = Namespace("accountinfo")
 

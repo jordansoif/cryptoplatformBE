@@ -12,7 +12,7 @@ class Purchase_Lots(Document):
 
     def serializer_purchase_lots(self):
         return{
-            "id": str(self._id),
+            "id": str(self.id),
             "user_owner": str(self.user_owner),
             "symbol": self.symbol,
             "purchase_date_time": self.purchase_date_time.isoformat(),

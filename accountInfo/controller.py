@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource, reqparse
 from user.model import Users, Purchase_Lots, Realized_Positions
 
+# get all holdings and get all realized need to be dixed
+
 
 # Get All Holdings
 def get_all_holdings(user_id):
