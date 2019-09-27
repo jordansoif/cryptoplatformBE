@@ -27,6 +27,7 @@ def purchase_crypto(user_id, symbol, purchase_price, units_purchased):
     new_purchase_lot = Purchase_Lots(user_owner=user_id,
                                      symbol=symbol,
                                      units_purchased=units_purchased,
+                                     units_remaining=units_purchased,
                                      cost_per_unit=purchase_price)
     new_purchase_lot.save()
     # Bitcoin adjustment
@@ -43,9 +44,9 @@ def sell_crypto(user_id, symbol, share_price, trade_value_calc, total_shares_bei
     for lots in sale_lots:  # loop over sale_lots to find matching purchase lots and update them
         lot_object = Purchase_Lots.objects(
             id=ObjectId(lots["saleLotInfo"]["id"]))
-        new_units_purchased = (
-            lot_object[0]['units_purchased'] - lots["value"])
-        lot_object.update(units_purchased=new_units_purchased)
+        new_units_remaining = (
+            lot_object[0]["units_remaining"] - lots["value"])
+        lot_object.update(units_remaining=new_units_remaining)
         new_realized_position = Realized_Positions(
             user_owner=user_id,
             symbol=symbol,

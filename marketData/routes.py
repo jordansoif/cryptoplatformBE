@@ -17,8 +17,7 @@ class GetSymbolInfo(Resource):
     def put(self):
         parser = binance_parser()
         args = parser.parse_args()
-        symbol_info = client.get_symbol_ticker(symbol=args["symbol"])
-        return symbol_info
+        return client.get_symbol_ticker(symbol=args["symbol"])
 
 
 @api.route("/twodaykline")
@@ -28,18 +27,16 @@ class TwoDayKline(Resource):
         args = parser.parse_args()
         exchange_time = client.get_server_time()
         two_days_back = exchange_time["serverTime"] - 172800000
-        klines = client.get_klines(
+        return client.get_klines(
             symbol=args["symbol"],
             interval=Client.KLINE_INTERVAL_1HOUR,
             startTime=two_days_back)
-        return klines
 
 
 @api.route("/getallsymbols")  # Get all available tickers from binance
 class GetAllSymbols(Resource):
     def get(self):
-        all_symbols = client.get_all_tickers()
-        return all_symbols
+        return client.get_all_tickers()
 
 
 # NEWS API ROUTES
