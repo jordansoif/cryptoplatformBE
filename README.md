@@ -6,7 +6,11 @@ Purpose of Project:
     store user information, but for that information to be retrieved for use
     on the front end. This rest API also makes calls to other API's such as
     Binance to retrieve real time market data for analysis in investment choices.
-    Other libraries that have been added include PassLib which adds a layer of encryption for user passwords.
+    Other libraries that have been added include PassLib which adds a layer of
+    encryption for user passwords.
+
+The Binance and NewsAPI keys needed to run the program are private, please contact
+me and I can provide those for use in running the app.
 
 How to Run (Windows):
 
