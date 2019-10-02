@@ -23,7 +23,7 @@ class Purchase_Lots(Document):
         }
 
     def serializer_holdings_page(self):
-        return{
+        return {
             "symbol": self.symbol,
             "current_price": float(client.get_symbol_ticker(symbol=self.symbol)["price"]),
             "units_remaining": self.units_remaining,
@@ -31,19 +31,6 @@ class Purchase_Lots(Document):
             "total_cost_basis": self.units_purchased * self.cost_per_unit,
             "profit_loss": float(client.get_symbol_ticker(symbol=self.symbol)["price"]) - self.cost_per_unit
         }
-
-    # def serializer_holdings_page(self):
-    #     return_list = []
-    #      info = {
-    #         "symbol": self.symbol,
-    #         "current_price": float(client.get_symbol_ticker(symbol=self.symbol)["price"]),
-    #         "units_remaining": self.units_remaining,
-    #         "position_value": self.units_purchased * float(client.get_symbol_ticker(symbol=self.symbol)["price"]),
-    #         "total_cost_basis": self.units_purchased * self.cost_per_unit,
-    #         "profit_loss": float(client.get_symbol_ticker(symbol=self.symbol)["price"]) - self.cost_per_unit
-    #     }
-
-    #     return return_list
 
 
 class Realized_Positions(Document):
