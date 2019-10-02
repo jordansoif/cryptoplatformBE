@@ -3,6 +3,7 @@ from flask_restplus import Api, Resource, reqparse, Namespace
 from binance.client import Client
 from newsapi import NewsApiClient
 from keys import API_KEY_BINANCE, API_SECRET_BINANCE, API_KEY_NEWS
+from datetime import datetime, timedelta, date
 
 api = Namespace("marketdata")
 
@@ -44,8 +45,9 @@ class GetAllSymbols(Resource):
 class GetTopStories(Resource):
     def get(self):  # Need to use time but configure date as specified below
         return newsapi.get_everything(q='bitcoin',
-                                      from_param='2019-09-01',
-                                      to='2019-09-18',
+                                      from_param=(datetime.now().date(
+                                      ) - timedelta(days=7)).isoformat(),
+                                      to=datetime.now().date().isoformat(),
                                       language='en',
                                       sort_by='relevancy',
                                       page=2)
